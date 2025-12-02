@@ -2,6 +2,20 @@
 import requests, time, os, tempfile, shutil
 from datetime import datetime, timedelta
 
+
+# === FILE PATHS ===
+OUTPUT_FILE_PATH = r"C:\Users\Azath.A\os\logs\log.txt"
+# === File Logging Setup ===
+output_file = open(OUTPUT_FILE_PATH, "w", encoding="utf-8")
+_original_print = print
+def print(*args, **kwargs):
+    """Print to console AND to log file at once."""
+    _original_print(*args, **kwargs)
+    sep = kwargs.get("sep", " ")
+    end = kwargs.get("end", "\n")
+    output_file.write(sep.join(map(str, args)) + end)
+    output_file.flush()
+
 ENV_PATH = r"C:\Users\Azath.A\os\auth.env"
 TOKEN_URL = "https://authenticate.os.wpp.com/auth/realms/os-prod/protocol/openid-connect/token"
 CLIENT_ID = "os-web"
@@ -106,3 +120,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# === Close Log File ===
+output_file.close()
